@@ -1,6 +1,8 @@
 import "./App.css";
+import { weatherData } from "./api/api";
 
 function App() {
+  console.log(weatherData);
   return (
     <>
       <div>
