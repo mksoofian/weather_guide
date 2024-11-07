@@ -25,3 +25,8 @@ export type WeatherCode = {
   description: string;
   imagePath: string;
 };
+
+export type WeatherError = {
+  error: boolean;
+  reason: string;
+};

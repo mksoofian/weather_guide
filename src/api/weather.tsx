@@ -1,9 +1,10 @@
 import { fetchWeatherApi } from "openmeteo";
+import { WeatherData, WeatherError } from "../types/types";
 
 export default async function fetchWeather(
   latitude: number,
   longitude: number
-) {
+): Promise<WeatherData | WeatherError> {
   // FROM OPEN-METEO DOCS
   const params = {
     latitude: latitude,
@@ -74,6 +75,9 @@ export default async function fetchWeather(
     },
   };
   return weatherData;
+
+  // return { error: true, reason: "test" }; // FOR TESTING ERROR STATE
+
   //   console.log(weatherData);
   // `weatherData` now contains a simple structure with arrays for datetime and weather data
   //   for (let i = 0; i < weatherData.hourly.time.length; i++) {
