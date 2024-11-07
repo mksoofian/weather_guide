@@ -1,7 +1,7 @@
 import fetchWeather from "./api/weather";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { WeatherData } from "./types/types";
+import { weatherCodes, WeatherData } from "./types/types";
 
 function App() {
   const [userLocation, setUserLocation] = useState<{
@@ -38,12 +38,20 @@ function App() {
         });
     }
   }, [userLocation]);
-  console.log(weatherData);
+
+  const dailyWeather = weatherData?.daily;
+  //   const hourlyWeather = weatherData?.hourly;
+
+  const todaysWeatherCodefromApi = dailyWeather?.weatherCode[1];
+  const todaysWeatherIcon = weatherCodes.find(
+    (code) => code.code === todaysWeatherCodefromApi
+  )?.imagePath;
 
   return (
     <main>
       {/* Current Weather */}
       <div id="current" className="text-center ">
+        <img src={todaysWeatherIcon} />
         <h2 className="text-blue-950 text-9xl font-extrabold">
           {weatherData?.current.temperature2m.toFixed(0)}
         </h2>
