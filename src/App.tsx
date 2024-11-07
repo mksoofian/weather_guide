@@ -38,11 +38,17 @@ function App() {
         });
     }
   }, [userLocation]);
+  console.log(weatherData);
 
   return (
     <>
+      {/* Current Weather */}
       <div>
-        <h1>Hi</h1>
+        <h2>{weatherData?.current.temperature2m.toFixed(0)}</h2>
+        <p>
+          but it feels like{" "}
+          {weatherData?.current.apparentTemperature.toFixed(0)}
+        </p>
       </div>
     </>
   );
