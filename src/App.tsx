@@ -41,18 +41,18 @@ function App() {
   console.log(weatherData);
 
   return (
-    <>
+    <main>
       {/* Current Weather */}
-      <div>
-        <h2 className="text-indigo-700 text-3xl">
+      <div id="current" className="text-center ">
+        <h2 className="text-blue-950 text-9xl font-extrabold">
           {weatherData?.current.temperature2m.toFixed(0)}
         </h2>
-        <p>
+        <p className="text-blue-900 font-semibold text-xl">
           but it feels like{" "}
           {weatherData?.current.apparentTemperature.toFixed(0)}
         </p>
       </div>
-    </>
+    </main>
   );
 }
 
