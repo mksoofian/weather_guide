@@ -1,4 +1,4 @@
-import { WeatherCode } from "../types/types";
+import { WeatherCode } from "../types";
 
 export const weatherCodes: WeatherCode[] = [
   { code: 0, description: "Clear sky", imagePath: "/weather-icons/sun-80.png" },
