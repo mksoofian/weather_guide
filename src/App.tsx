@@ -1,7 +1,8 @@
 import fetchWeather from "./api/weather";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { weatherCodes, WeatherData } from "./types/types";
+import { WeatherData } from "./types/types";
+import { weatherCodes } from "./utils/weatherCodes";
 
 function App() {
   const [userLocation, setUserLocation] = useState<{
@@ -44,7 +45,7 @@ function App() {
 
   const todaysWeatherCodefromApi = dailyWeather?.weatherCode[1];
   const todaysWeatherIcon = weatherCodes.find(
-    (code) => code.code === todaysWeatherCodefromApi
+    (codeSet) => codeSet.code === todaysWeatherCodefromApi
   )?.imagePath;
 
   return (
