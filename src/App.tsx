@@ -44,7 +44,9 @@ function App() {
     <>
       {/* Current Weather */}
       <div>
-        <h2>{weatherData?.current.temperature2m.toFixed(0)}</h2>
+        <h2 className="text-indigo-700 text-3xl">
+          {weatherData?.current.temperature2m.toFixed(0)}
+        </h2>
         <p>
           but it feels like{" "}
           {weatherData?.current.apparentTemperature.toFixed(0)}
