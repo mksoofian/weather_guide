@@ -1,12 +1,14 @@
 import fetchWeather from "./api/weather";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { WeatherData } from "./types/types";
 
 function App() {
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -23,8 +25,19 @@ function App() {
     }
   }, []);
 
-  if (userLocation)
-    console.log(fetchWeather(userLocation.latitude, userLocation.longitude));
+  useEffect(() => {
+    if (userLocation) {
+      const response = fetchWeather(
+        userLocation.latitude,
+        userLocation.longitude
+      );
+      response
+        .then((data) => setWeatherData(data))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [userLocation]);
 
   return (
     <>
