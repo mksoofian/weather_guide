@@ -76,25 +76,24 @@ function App() {
     );
   }
 
-  if (weatherData)
-    return (
-      <main>
-        {/* Current Weather */}
-        <div
-          id="current"
-          className="text-center relative flex gap-4 items-center"
-        >
-          <img src={todaysWeatherIcon} className="gentle-scale-up" />
-          <div className="flex justify-center align-top gap-2">
-            {" "}
-            <h2 className="text-blue-950 text-8xl font-extrabold ">
-              {weatherData?.current.temperature2m.toFixed(0)}
-            </h2>{" "}
-            <p className="text-3xl font-normal pt-2">°F</p>
-          </div>
+  return (
+    <main>
+      {/* Current Weather */}
+      <div
+        id="current"
+        className="text-center relative flex gap-4 items-center"
+      >
+        <img src={todaysWeatherIcon} className="gentle-scale-up" />
+        <div className="flex justify-center align-top gap-2">
+          {" "}
+          <h2 className="text-blue-950 text-8xl font-extrabold ">
+            {weatherData?.current.temperature2m.toFixed(0)}
+          </h2>{" "}
+          <p className="text-3xl font-normal pt-2">°F</p>
         </div>
-      </main>
-    );
+      </div>
+    </main>
+  );
 }
 
 export default App;
