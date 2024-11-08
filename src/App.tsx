@@ -16,8 +16,6 @@ function App() {
   }
 
   useEffect(() => {
-    setIsLoading(true); // for testing purposes
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         if (position.coords.latitude && position.coords.longitude) {
@@ -48,8 +46,7 @@ function App() {
 
   const dailyWeather = weatherData?.daily;
   //   const hourlyWeather = weatherData?.hourly;
-
-  const todaysWeatherCodefromApi = dailyWeather?.weatherCode[1];
+  const todaysWeatherCodefromApi = dailyWeather?.weatherCode[1]; // [0] represents yesterday's weather. [1] is today.
   const todaysWeatherIcon = weatherCodes.find(
     (codeSet) => codeSet.code === todaysWeatherCodefromApi
   )?.imagePath;
