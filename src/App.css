@@ -30,11 +30,11 @@
   padding: 2em;
 }
 
-.gentle-bounce {
-  animation: bounce 2s ease-in-out infinite;
+.gentle-bounce-down {
+  animation: bounce-down 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
+@keyframes bounce-down {
   0%,
   100% {
     transform: translateY(0);
@@ -45,4 +45,21 @@
   85% {
     transform: translateY(0);
   }
+}
+
+.gentle-scale-up {
+  animation: scale-up 2s ease-in-out infinite;
+}
+
+@keyframes scale-up {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  /* 60% {
+    transform: scale(1);
+  } */
 }
