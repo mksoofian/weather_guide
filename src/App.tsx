@@ -17,28 +17,32 @@ function App() {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        if (position.coords.latitude && position.coords.longitude) {
-          async function fetchData() {
-            const response = await fetchWeather(
-              position.coords.latitude,
-              position.coords.longitude
-            );
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          if (position.coords.latitude && position.coords.longitude) {
+            async function fetchData() {
+              const response = await fetchWeather(
+                position.coords.latitude,
+                position.coords.longitude
+              );
 
-            // error handling
-            if (isWeatherError(response)) {
-              setError(response.reason);
-              return;
+              // error handling
+              if (isWeatherError(response)) {
+                setError(response.reason);
+                return;
+              }
+
+              setWeatherData(response as WeatherData);
+              setIsLoading(false);
             }
-
-            setWeatherData(response as WeatherData);
-            setIsLoading(false);
+            fetchData();
           }
-          fetchData();
+        },
+        function error(err) {
+          setError(`ERROR(${err.code}): ${err.message}`);
         }
-      });
+      );
     } else {
-      console.log("Geolocation is not supported by this browser.");
       setError("Geolocation is not supported by this browser.");
       setIsLoading(false);
     }
