@@ -26,7 +26,7 @@ function App() {
                 position.coords.longitude
               );
 
-              // error handling
+              // error handling for fetch
               if (isWeatherError(response)) {
                 setError(response.reason);
                 return;
@@ -39,6 +39,7 @@ function App() {
           }
         },
         function error(err) {
+          // error handling for getCurrentPosition
           setError(`ERROR(${err.code}): ${err.message}`);
         }
       );
