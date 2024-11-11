@@ -1,7 +1,7 @@
 import fetchWeather from "./api/weather";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { WeatherData, WeatherError } from "./types/types";
+import { WeatherData } from "./types/types";
 import { weatherCodes } from "./types/utils/weatherCodes";
 
 function App() {
@@ -9,11 +9,11 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  function isWeatherError(
-    response: WeatherData | WeatherError
-  ): response is WeatherError {
-    return (response as WeatherError).error !== undefined;
-  }
+  //   function isWeatherError(
+  //     response: WeatherData | WeatherError
+  //   ): response is WeatherError {
+  //     return (response as WeatherError).error !== undefined;
+  //   }
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -25,12 +25,12 @@ function App() {
                 position.coords.latitude,
                 position.coords.longitude
               );
-
+              console.log(response);
               // error handling for fetch
-              if (isWeatherError(response)) {
-                setError(response.reason);
-                return;
-              }
+              //   if (isWeatherError(response)) {
+              //     setError(response.reason);
+              //     return;
+              //   }
 
               setWeatherData(response as WeatherData);
               setIsLoading(false);
@@ -49,11 +49,8 @@ function App() {
     }
   }, []);
 
-  const dailyWeather = weatherData?.daily;
-  //   const hourlyWeather = weatherData?.hourly;
-  const todaysWeatherCodefromApi = dailyWeather?.weatherCode[1]; // [0] represents yesterday's weather. [1] is today.
   const todaysWeatherIcon = weatherCodes.find(
-    (codeSet) => codeSet.code === todaysWeatherCodefromApi
+    (codeSet) => codeSet.code === weatherData?.current.weatherCode
   )?.imagePath;
 
   if (error) {
