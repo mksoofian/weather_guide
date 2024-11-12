@@ -19,6 +19,7 @@ export default function App() {
   );
 }
 
+// Declare the fetch
 const fetchWeatherData = async function fetchData(coordinates: GeoLocation) {
   const response = await fetchWeather(coordinates);
   // Error handling with Type Narrowing depending on whether API returns an error object or data object
@@ -32,6 +33,7 @@ const fetchWeatherData = async function fetchData(coordinates: GeoLocation) {
 function WeatherPage() {
   const [coordinates, setCoordinates] = useState<GeoLocation | null>(null);
 
+  //Get the users coordinates on page load (with permission of course)
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -55,14 +57,15 @@ function WeatherPage() {
     }
   }, []);
 
+  // Fetch the weather
   const {
     data: rcvdWeatherData,
     isLoading: isLoadingWeatherData,
     error: rcvdWeatherDataError,
   } = useQuery({
-    queryKey: ["weatherData", coordinates],
+    queryKey: ["weatherData", coordinates], // Only fetch once coordinates is true
     queryFn: () => fetchWeatherData(coordinates!),
-    enabled: !!coordinates,
+    enabled: !!coordinates, // We force coordinates to be true since we know its true bc of the second param of queryKey
   });
 
   const todaysWeatherIcon = weatherCodes.find(
