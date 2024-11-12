@@ -9,12 +9,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //   function isWeatherError(
-  //     response: WeatherData | WeatherError
-  //   ): response is WeatherError {
-  //     return (response as WeatherError).error !== undefined;
-  //   }
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -25,14 +19,14 @@ function App() {
                 position.coords.latitude,
                 position.coords.longitude
               );
-              console.log(response);
-              // error handling for fetch
-              //   if (isWeatherError(response)) {
-              //     setError(response.reason);
-              //     return;
-              //   }
 
-              setWeatherData(response as WeatherData);
+              // Error handling with Type Narrowing depending on whether API returns an error object or data object
+              if ("error" in response) {
+                setError(`Error: ${response.reason}`);
+              } else {
+                setWeatherData(response);
+              }
+
               setIsLoading(false);
             }
             fetchData();
