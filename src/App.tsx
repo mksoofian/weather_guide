@@ -41,24 +41,8 @@ function WeatherPage() {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             };
-            // async function fetchData() {
-            //   const response = await fetchWeather(
-            //     position.coords.latitude,
-            //     position.coords.longitude
-            //   );
 
-            //   // Error handling with Type Narrowing depending on whether API returns an error object or data object
-            //   if ("error" in response) {
-            //     setError(`Error: ${response.reason}`);
-            //   } else {
-            //     setWeatherData(response);
-            //   }
-            // }
-            // const {data, isLoading, error} = useQuery({queryKey:[], queryFn: fetchData})
-
-            // fetchData();
             setCoordinates(userCoordinates);
-            console.log(userCoordinates);
           }
         },
         function error(err) {
