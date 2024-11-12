@@ -1,15 +1,14 @@
 import { fetchWeatherApi } from "openmeteo";
-import { WeatherData, WeatherError } from "../types/types";
+import { GeoLocation, WeatherData, WeatherError } from "../types/types";
 
 export default async function fetchWeather(
-  latitude: number,
-  longitude: number
+  coordinates: GeoLocation
 ): Promise<WeatherData | WeatherError> {
   // FROM OPEN-METEO DOCS
   // 2m in this API refers to "2 meters above ground"
   const params = {
-    latitude: latitude,
-    longitude: longitude,
+    latitude: coordinates.latitude,
+    longitude: coordinates.longitude,
     current: [
       "temperature_2m",
       "apparent_temperature",

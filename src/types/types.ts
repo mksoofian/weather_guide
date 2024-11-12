@@ -18,3 +18,8 @@ export type WeatherError = {
   error: boolean;
   reason: string;
 };
+
+export type GeoLocation = {
+  latitude: number;
+  longitude: number;
+};

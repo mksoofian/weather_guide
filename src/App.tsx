@@ -1,52 +1,91 @@
-import fetchWeather from "./api/weather";
 import "./App.css";
+import fetchWeather from "./api/weather";
 import { useEffect, useState } from "react";
-import { WeatherData } from "./types/types";
+import { GeoLocation } from "./types/types";
 import { weatherCodes } from "./types/utils/weatherCodes";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 
-function App() {
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const queryClient = new QueryClient();
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <WeatherPage />
+    </QueryClientProvider>
+  );
+}
+
+const fetchWeatherData = async function fetchData(coordinates: GeoLocation) {
+  const response = await fetchWeather(coordinates);
+  // Error handling with Type Narrowing depending on whether API returns an error object or data object
+  if ("error" in response) {
+    throw new Error(`Error: ${response.reason}`);
+  } else {
+    return response;
+  }
+};
+
+function WeatherPage() {
+  const [coordinates, setCoordinates] = useState<GeoLocation | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
           if (position.coords.latitude && position.coords.longitude) {
-            async function fetchData() {
-              const response = await fetchWeather(
-                position.coords.latitude,
-                position.coords.longitude
-              );
+            const userCoordinates: GeoLocation = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            // async function fetchData() {
+            //   const response = await fetchWeather(
+            //     position.coords.latitude,
+            //     position.coords.longitude
+            //   );
 
-              // Error handling with Type Narrowing depending on whether API returns an error object or data object
-              if ("error" in response) {
-                setError(`Error: ${response.reason}`);
-              } else {
-                setWeatherData(response);
-              }
-            }
-            fetchData();
-            setIsLoading(false);
+            //   // Error handling with Type Narrowing depending on whether API returns an error object or data object
+            //   if ("error" in response) {
+            //     setError(`Error: ${response.reason}`);
+            //   } else {
+            //     setWeatherData(response);
+            //   }
+            // }
+            // const {data, isLoading, error} = useQuery({queryKey:[], queryFn: fetchData})
+
+            // fetchData();
+            setCoordinates(userCoordinates);
+            console.log(userCoordinates);
           }
         },
         function error(err) {
           // error handling for getCurrentPosition
-          setError(`ERROR(${err.code}): ${err.message}`);
+          throw new Error(`ERROR(${err.code}): ${err.message}`);
         }
       );
     } else {
-      setError("Geolocation is not supported by this browser.");
-      setIsLoading(false);
+      throw new Error("Geolocation is not supported by this browser.");
     }
   }, []);
 
+  const {
+    data: rcvdWeatherData,
+    isLoading: isLoadingWeatherData,
+    error: rcvdWeatherDataError,
+  } = useQuery({
+    queryKey: ["weatherData", coordinates],
+    queryFn: () => fetchWeatherData(coordinates!),
+    enabled: !!coordinates,
+  });
+
   const todaysWeatherIcon = weatherCodes.find(
-    (codeSet) => codeSet.code === weatherData?.current.weatherCode
+    (codeSet) => codeSet.code === rcvdWeatherData?.current.weatherCode
   )?.imagePath;
 
-  if (error) {
+  if (rcvdWeatherDataError) {
     return (
       <main>
         <div id="current" className="text-center ">
@@ -54,13 +93,15 @@ function App() {
             src="/weather-icons/sad-sun-80.png"
             className="gentle-bounce-down"
           />
-          <p className="text-red-950 font-semibold text-2xl">{error}</p>
+          <p className="text-red-950 font-semibold text-2xl">
+            {rcvdWeatherDataError.message}
+          </p>
         </div>
       </main>
     );
   }
 
-  if (isLoading) {
+  if (isLoadingWeatherData) {
     return (
       <main>
         <div id="current" className="text-center ">
@@ -82,7 +123,7 @@ function App() {
         <div className="flex justify-center align-top gap-2">
           {" "}
           <h2 className="text-blue-950 text-8xl font-extrabold ">
-            {weatherData?.current.temperature2m.toFixed(0)}
+            {rcvdWeatherData?.current.temperature2m.toFixed(0)}
           </h2>{" "}
           <p className="text-3xl font-normal pt-2">°F</p>
         </div>
@@ -90,5 +131,3 @@ function App() {
     </main>
   );
 }
-
-export default App;
