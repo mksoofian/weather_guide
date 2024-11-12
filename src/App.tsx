@@ -26,10 +26,9 @@ function App() {
               } else {
                 setWeatherData(response);
               }
-
-              setIsLoading(false);
             }
             fetchData();
+            setIsLoading(false);
           }
         },
         function error(err) {
